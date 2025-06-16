@@ -1,3 +1,4 @@
+import { db } from "~/server/db";
 
 const mockUls = [
   'https://163jz9wo57.ufs.sh/f/LDDo8gC5wt4WmcJNEaXjQbv2clUhmXJuonF0zpOART83ya1w',
@@ -13,12 +14,15 @@ const mockImages = mockUls.map((url,index) => {
   }
 })
 
-export default function HomePage() {
+export default async function HomePage() {
+  const posts = await db.query.posts.findMany()
+  console.log(posts);
+  
   return (
  <main>
    <div className="flex flex-wrap gap-4">
-     {[...mockImages, ...mockImages, ...mockImages ].map((image) => (
-      <div key={image.id} className="w-48 p-4">
+     {[...mockImages,...mockImages,...mockImages].map((image,index) => (
+      <div key={image.id+'-'+index} className="w-48 p-4">
         <img src={image.url} alt={`Image ${image.id}`} className="w-full h-auto" />
       </div>
      ))}
